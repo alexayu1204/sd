@@ -4,14 +4,14 @@ import sys
 import os
 import json
 
-if __name__ == "__main__":
-    # List files in /opt/ml directory
-    print(os.listdir('/opt/ml'))
-    # Read and print the contents of /opt/ml/parameters.json
-    with open('/opt/ml/parameters.json', 'r') as file:
-        parameters = json.load(file)
-        print(parameters)
+# List files in /opt/ml directory
+print(os.listdir('/opt/ml'))
+# Read and print the contents of /opt/ml/parameters.json
+# with open('/opt/ml/parameters.json', 'r') as file:
+#     parameters = json.load(file)
+#     print(parameters)
 
+if __name__ == "__main__"
     try:
         print("trainer working...")
         trainer()
