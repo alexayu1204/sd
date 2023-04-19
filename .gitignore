@@ -1,0 +1,15 @@
+__pycache__/
+build/
+*.egg-info/
+*.so
+
+tmp*
+data/
+trial*/
+.vs/
+
+TOKEN
+*.ckpt
+
+densegridencoder
+tets/256_tets.npz

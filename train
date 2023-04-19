@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+from base import trainer
+import sys
+
+
+if __name__ == "__main__":
+    try:
+        trainer()
+        # A zero exit code causes the job to be marked a Succeeded.
+        sys.exit(0)
+    except Exception as err:
+        raise err
