@@ -1,12 +1,20 @@
 #!/usr/bin/env python3
 from base import trainer
 import sys
-
+import os
+import json
 
 if __name__ == "__main__":
+    # List files in /opt/ml directory
+    print(os.listdir('/opt/ml'))
+    # Read and print the contents of /opt/ml/parameters.json
+    with open('/opt/ml/parameters.json', 'r') as file:
+        parameters = json.load(file)
+        print(parameters)
+
     try:
+        print("trainer working...")
         trainer()
-        # A zero exit code causes the job to be marked a Succeeded.
-        sys.exit(0)
     except Exception as err:
+        print("error loading training scripts...")
         raise err
