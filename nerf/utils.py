@@ -533,7 +533,7 @@ class Trainer(object):
         
         self.log(f"==> Start Test, save results to {save_path}")
 
-        pbar = tqdm.tqdm(total=len(loader) * loader.batch_size, bar_format='{percentage:3.0f}% {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]')
+        # pbar = tqdm.tqdm(total=len(loader) * loader.batch_size, bar_format='{percentage:3.0f}% {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]')
         self.model.eval()
 
         if write_video:
@@ -561,7 +561,7 @@ class Trainer(object):
                     cv2.imwrite(os.path.join(save_path, f'{name}_{i:04d}_rgb.png'), cv2.cvtColor(pred, cv2.COLOR_RGB2BGR))
                     cv2.imwrite(os.path.join(save_path, f'{name}_{i:04d}_depth.png'), pred_depth)
 
-                pbar.update(loader.batch_size)
+                # pbar.update(loader.batch_size)
 
         if write_video:
             all_preds = np.stack(all_preds, axis=0)
@@ -706,8 +706,8 @@ class Trainer(object):
         if self.world_size > 1:
             loader.sampler.set_epoch(self.epoch)
         
-        if self.local_rank == 0:
-            pbar = tqdm.tqdm(total=len(loader) * loader.batch_size, bar_format='{desc}: {percentage:3.0f}% {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]')
+        # if self.local_rank == 0:
+        #     pbar = tqdm.tqdm(total=len(loader) * loader.batch_size, bar_format='{desc}: {percentage:3.0f}% {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]')
 
         self.local_step = 0
 
@@ -746,11 +746,11 @@ class Trainer(object):
                     self.writer.add_scalar("train/loss", loss_val, self.global_step)
                     self.writer.add_scalar("train/lr", self.optimizer.param_groups[0]['lr'], self.global_step)
 
-                if self.scheduler_update_every_step:
-                    pbar.set_description(f"loss={loss_val:.4f} ({total_loss/self.local_step:.4f}), lr={self.optimizer.param_groups[0]['lr']:.6f}")
-                else:
-                    pbar.set_description(f"loss={loss_val:.4f} ({total_loss/self.local_step:.4f})")
-                pbar.update(loader.batch_size)
+                # if self.scheduler_update_every_step:
+                #     pbar.set_description(f"loss={loss_val:.4f} ({total_loss/self.local_step:.4f}), lr={self.optimizer.param_groups[0]['lr']:.6f}")
+                # else:
+                #     pbar.set_description(f"loss={loss_val:.4f} ({total_loss/self.local_step:.4f})")
+                # pbar.update(loader.batch_size)
 
         if self.ema is not None:
             self.ema.update()
@@ -759,7 +759,7 @@ class Trainer(object):
         self.stats["loss"].append(average_loss)
 
         if self.local_rank == 0:
-            pbar.close()
+            # pbar.close()
             if self.report_metric_at_train:
                 for metric in self.metrics:
                     self.log(metric.report(), style="red")
@@ -793,8 +793,8 @@ class Trainer(object):
             self.ema.store()
             self.ema.copy_to()
 
-        if self.local_rank == 0:
-            pbar = tqdm.tqdm(total=len(loader) * loader.batch_size, bar_format='{desc}: {percentage:3.0f}% {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]')
+        # if self.local_rank == 0:
+        #     pbar = tqdm.tqdm(total=len(loader) * loader.batch_size, bar_format='{desc}: {percentage:3.0f}% {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]')
 
         with torch.no_grad():
             self.local_step = 0
@@ -841,15 +841,15 @@ class Trainer(object):
                     cv2.imwrite(save_path, cv2.cvtColor(pred, cv2.COLOR_RGB2BGR))
                     cv2.imwrite(save_path_depth, pred_depth)
 
-                    pbar.set_description(f"loss={loss_val:.4f} ({total_loss/self.local_step:.4f})")
-                    pbar.update(loader.batch_size)
+                    # pbar.set_description(f"loss={loss_val:.4f} ({total_loss/self.local_step:.4f})")
+                    # pbar.update(loader.batch_size)
 
 
         average_loss = total_loss / self.local_step
         self.stats["valid_loss"].append(average_loss)
 
         if self.local_rank == 0:
-            pbar.close()
+            # pbar.close()
             if not self.use_loss_as_metric and len(self.metrics) > 0:
                 result = self.metrics[0].measure()
                 self.stats["results"].append(result if self.best_mode == 'min' else - result) # if max mode, use -result
