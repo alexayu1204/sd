@@ -219,7 +219,7 @@ def train(opt):
         # instead of zip everything together, expose some for demo purpose
         s3 = boto3.client('s3')
         workspace = opt.workspace
-        s3_bucket = 'jerry-3d-object-generation'
+        s3_bucket = '3d-object-generation-jerry'
         s3_folder = f"stable-dreamfusion/results/{workspace}"
         local_mesh_folder = os.path.join(workspace, "mesh")
 
@@ -236,7 +236,7 @@ def train(opt):
         
 
         local_videos_folder = os.path.join(workspace, "results")
-        bucket_name = "jerry-3d-object-generation"
+        bucket_name = "3d-object-generation-jerry"
         upload_to_s3(local_videos_folder, bucket_name, workspace)
 
         attribute = append_attributes_to_file(os.path.join(workspace, 'log_df.txt'))
